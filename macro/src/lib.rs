@@ -1,6 +1,11 @@
 use proc_macro::TokenStream;
-use quote::{ToTokens, quote};
-use syn::{parse::{ParseStream, Parse}, punctuated::Punctuated, Result, Expr, Token, Member, parse_macro_input};
+use quote::{quote, ToTokens};
+use syn::{
+    parse::{Parse, ParseStream},
+    parse_macro_input,
+    punctuated::Punctuated,
+    Expr, Member, Result, Token,
+};
 
 struct CloneItem {
     expr: Box<dyn ToTokens>,
@@ -13,9 +18,8 @@ struct CloneItems {
 
 impl Parse for CloneItems {
     fn parse(input: ParseStream) -> Result<Self> {
-        let input =
-            Punctuated::<Expr, Token![,]>::parse_terminated(input)
-                .expect("Arguments should form a comma (',') separated list.");
+        let input = Punctuated::<Expr, Token![,]>::parse_terminated(input)
+            .expect("Arguments should form a comma (',') separated list.");
         let buffer = input
             .into_iter()
             .enumerate()
